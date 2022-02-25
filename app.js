@@ -8,13 +8,18 @@ const PORT = process.env.PORT || 3000;
 
 let connections = [];
 
+app.use("/", (req, res, next) => {
+    console.log("Root requets");
+    next();
+});
+
 io.on("connection", (socket) => {
     console.log(`${socket.id} connected`)
     connections[socket.id] = socket;
 
-    socket.on("disconnect", (reason) =>{
+    socket.on("disconnect", (reason) => {
         delete connections[socket.id];
-        console.log(`${socket.id} disconnected`)
+        console.log(`${socket.id} disconnected: ${reason}`)
     });
 });
 
